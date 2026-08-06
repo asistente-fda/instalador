@@ -1,0 +1,79 @@
+# Publica un instalador ya compilado como release de este repositorio.
+#
+# El release lo crea el propio workflow (GITHUB_TOKEN), asi que queda a nombre
+# de github-actions y no del usuario que lo dispara: este repo es la cara
+# publica que ve el cliente y no tiene por que mostrar una cuenta personal.
+#
+# El .exe no se guarda aqui: se baja desde la URL que se indique al lanzar el
+# workflow (la del artefacto ya compilado) y se sube como adjunto del release.
+name: publicar instalador
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version del instalador (ej. 1.1.2). Nombra el tag y el titulo del release."
+        required: true
+      url_exe:
+        description: "URL de descarga directa del .exe ya compilado."
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Bajar el instalador
+        run: |
+          set -euo pipefail
+          nombre="asistente_fda_setup_${{ inputs.version }}.exe"
+          curl -fL --retry 3 -o "$nombre" "${{ inputs.url_exe }}"
+          # Un .exe de Windows empieza por "MZ": si la URL devolvio una pagina
+          # de error, curl saldria 0 con un HTML y el release quedaria con un
+          # archivo inservible.
+          if [ "$(head -c 2 "$nombre")" != "MZ" ]; then
+            echo "Lo descargado no es un ejecutable de Windows." >&2
+            exit 1
+          fi
+          sha256sum "$nombre" > "$nombre.sha256"
+          ls -lh "$nombre"
+
+      - name: Publicar el release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          nombre="asistente_fda_setup_${{ inputs.version }}.exe"
+          cat > notas.md <<'NOTAS'
+Instalador del Asistente FDA para Windows.
+
+## Cómo se instala
+
+1. Descarga el `.exe` de aquí abajo y ejecútalo.
+2. Windows puede avisar que no reconoce el programa: elige "Más información"
+   y luego "Ejecutar de todas formas".
+3. Sigue el asistente de instalación hasta el final.
+4. Ábrelo. La primera vez te pedirá un nombre para esta computadora.
+5. Queda esperando a que un administrador la active. En cuanto la active, la
+   pantalla se quita sola y podrás empezar a trabajar.
+
+No hace falta ser administrador de la computadora: el asistente se instala
+dentro del perfil del usuario que lo corre.
+
+## Si ya tenías el asistente instalado
+
+Corre este instalador encima: cierra el asistente solo, conserva tus llaves y
+tu historial, y actualiza el programa.
+
+## Comprobar que el archivo es el correcto (opcional)
+
+El archivo `.sha256` trae la huella del instalador. En PowerShell:
+
+    Get-FileHash -Algorithm SHA256 .\NOMBRE_EXE
+NOTAS
+          sed -i "s/NOMBRE_EXE/$nombre/" notas.md
+          gh release create "v${{ inputs.version }}" "$nombre" "$nombre.sha256" \
+            --title "Asistente FDA ${{ inputs.version }}" \
+            --notes-file notas.md

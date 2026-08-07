@@ -1,0 +1,57 @@
+# Vuelve a publicar un release que ya existe, sin cambiar nada de su
+# contenido, para que quede a nombre de github-actions y no de la cuenta
+# personal que lo creo a mano: el autor de un release lo fija GitHub con quien
+# lo crea y no se puede editar despues.
+#
+# Todo pasa dentro de GitHub: baja los adjuntos del release actual con el
+# token del propio repositorio, guarda sus notas tal cual, borra el release
+# (el tag se conserva) y lo vuelve a crear igual. Las URL de descarga no
+# cambian, porque dependen del tag y del nombre de cada archivo.
+name: republicar release a nombre del repositorio
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag del release a republicar (ej. v1.1.3)."
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  republicar:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      TAG: ${{ inputs.tag }}
+    steps:
+      - name: Guardar el release actual
+        run: |
+          set -euo pipefail
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json name --jq .name > titulo.txt
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json body --jq .body > notas.md
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --dir adjuntos
+          ls -lh adjuntos
+          # Red de seguridad antes de borrar nada: si la bajada quedo corta o
+          # el .exe no es un ejecutable de Windows, se aborta con el release
+          # original intacto.
+          if [ ! -s titulo.txt ] || [ ! -s notas.md ]; then
+            echo "El release no trajo titulo o notas." >&2
+            exit 1
+          fi
+          for exe in adjuntos/*.exe; do
+            if [ "$(head -c 2 "$exe")" != "MZ" ]; then
+              echo "$exe no es un ejecutable de Windows." >&2
+              exit 1
+            fi
+          done
+
+      - name: Borrar y volver a crear el release
+        run: |
+          set -euo pipefail
+          gh release delete "$TAG" --repo "$GITHUB_REPOSITORY" --yes
+          gh release create "$TAG" adjuntos/* --repo "$GITHUB_REPOSITORY" \
+            --title "$(cat titulo.txt)" --notes-file notas.md --latest
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json author,assets \
+            --jq '{autor: .author.login, adjuntos: [.assets[].name]}'

@@ -19,5 +19,14 @@ dentro del perfil del usuario que lo corre.
 
 ## Si ya tenías el asistente instalado
 
-Corre este instalador encima: cierra el asistente solo, conserva tus llaves y
-tu historial, y actualiza el programa.
+Corre este instalador encima del que ya está: cierra el asistente solo,
+actualiza el programa y deja intactas tus llaves (lo que conecta esta
+computadora con el sistema), tu configuración y tu historial. No hay que
+desinstalar nada, y la computadora sigue activada.
+
+Durante la instalación aparece la casilla "Traer llaves y estado de una
+instalación anterior". Esa es para otra cosa: solo se marca si el asistente
+vivía en una carpeta aparte, de cuando todavía no había instalador, y quieres
+traerte de ahí las llaves y el historial (te pedirá esa carpeta). En una
+actualización normal, y en la primera instalación, se sigue de largo sin
+marcarla.

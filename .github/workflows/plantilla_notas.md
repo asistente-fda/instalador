@@ -2,9 +2,7 @@ Instalador del Asistente FDA para Windows.
 
 ## Qué descargar
 
-Aquí abajo, en "Assets", descarga `NOMBRE_EXE`: es el archivo más pesado de la
-lista y el único que termina en `.exe`. El otro, el que termina en `.sha256`,
-no es un programa: no lo necesitas.
+Aquí abajo, en "Assets", descarga `NOMBRE_EXE`.
 
 ## Cómo se instala
 

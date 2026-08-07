@@ -1,8 +1,14 @@
 Instalador del Asistente FDA para Windows.
 
+## Qué descargar
+
+Aquí abajo, en "Assets", descarga `NOMBRE_EXE`: es el archivo más pesado de la
+lista y el único que termina en `.exe`. El otro, el que termina en `.sha256`,
+no es un programa: no lo necesitas.
+
 ## Cómo se instala
 
-1. Descarga el `.exe` de aquí abajo y ejecútalo.
+1. Ejecuta `NOMBRE_EXE`.
 2. Windows puede avisar que no reconoce el programa: elige "Más información"
    y luego "Ejecutar de todas formas".
 3. Sigue el asistente de instalación hasta el final.
@@ -17,9 +23,3 @@ dentro del perfil del usuario que lo corre.
 
 Corre este instalador encima: cierra el asistente solo, conserva tus llaves y
 tu historial, y actualiza el programa.
-
-## Comprobar que el archivo es el correcto (opcional)
-
-El archivo `.sha256` trae la huella del instalador. En PowerShell:
-
-    Get-FileHash -Algorithm SHA256 .\NOMBRE_EXE

@@ -11,10 +11,10 @@ Aquí abajo, en "Assets", descarga `NOMBRE_EXE`.
    y luego "Ejecutar de todas formas".
 3. Sigue el asistente de instalación hasta el final.
 4. Ábrelo. La primera vez te pedirá un nombre para esta computadora.
-5. Queda esperando a que un administrador la active. En cuanto la active, la
+5. Queda esperando a que activen esta computadora. En cuanto la activen, la
    pantalla se quita sola y podrás empezar a trabajar.
 
-No hace falta ser administrador de la computadora: el asistente se instala
+No necesitas permisos de administrador de Windows: el asistente se instala
 dentro del perfil del usuario que lo corre.
 
 ## Si ya tenías el asistente instalado

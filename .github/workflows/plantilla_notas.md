@@ -1,8 +1,6 @@
 Instalador del Asistente FDA para Windows.
 
-## Qué descargar
-
-Aquí abajo, en "Assets", descarga `NOMBRE_EXE`.
+Aquí abajo, en **Assets**, descarga `NOMBRE_EXE`.
 
 ## Cómo se instala
 

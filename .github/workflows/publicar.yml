@@ -41,7 +41,6 @@ jobs:
             echo "Lo descargado no es un ejecutable de Windows." >&2
             exit 1
           fi
-          sha256sum "$nombre" > "$nombre.sha256"
           ls -lh "$nombre"
 
       - name: Publicar el release
@@ -51,6 +50,6 @@ jobs:
           set -euo pipefail
           nombre="asistente_fda_setup_${{ inputs.version }}.exe"
           sed "s/NOMBRE_EXE/$nombre/" .github/workflows/plantilla_notas.md > notas.md
-          gh release create "v${{ inputs.version }}" "$nombre" "$nombre.sha256" \
+          gh release create "v${{ inputs.version }}" "$nombre" \
             --title "Asistente FDA ${{ inputs.version }}" \
             --notes-file notas.md

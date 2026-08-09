@@ -2,26 +2,13 @@
 
 Instalador del Asistente FDA para Windows.
 
-**[Descargar la última versión](https://github.com/asistente-fda/instalador/releases/latest)**
+**[Guía de descarga e instalación](https://asistente-fda.github.io/instalador/)** — la página
+que se le pasa a quien va a instalar: los dos botones de descarga y, señalado sobre las
+capturas, dónde queda escondido el botón que hay que pulsar en cada aviso.
 
-## Cómo se instala
-
-1. Descarga el instalador (`asistente_fda_setup_*.exe`) y ejecútalo.
-2. Windows puede avisar que no reconoce el programa: elige "Más información"
-   y luego "Ejecutar de todas formas".
-3. Sigue el asistente de instalación hasta el final.
-4. Ábrelo. La primera vez te pedirá un nombre para esta computadora.
-5. Queda esperando a que un administrador la active. En cuanto la active, la
-   pantalla se quita sola y podrás empezar a trabajar.
-
-No hace falta ser administrador de la computadora: el asistente se instala
-dentro del perfil del usuario que lo corre.
-
-## Si ya tenías el asistente instalado
-
-Corre el instalador nuevo encima: cierra el asistente solo, conserva tus
-llaves y tu historial, y actualiza el programa.
+También está la **[lista de versiones](https://github.com/asistente-fda/instalador/releases/latest)**,
+por si hace falta bajar una en concreto.
 
 ---
 
-Este repositorio solo aloja la descarga. El programa y su código viven aparte.
+Este repositorio aloja la descarga y su guía. El programa y su código viven aparte.
